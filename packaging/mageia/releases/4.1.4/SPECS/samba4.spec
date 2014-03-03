@@ -1,5 +1,5 @@
 %define pkg_name	samba
-%define version		4.0.0beta2
+%define version		4.1.4
 %define rel		9.6
 #define	subrel		1
 %define vscanver 	0.3.6c-beta5
@@ -7,13 +7,13 @@
 %define netapimajor	0
 %define smbsharemodesmajor	0
 %define	tallocmajor	2
-%define tallocver	2.0.7                                                     
+%define tallocver	2.0.8
 %define tdbmajor	1
-%define tdbver		1.1.3                                                     
+%define tdbver		1.2.12
 %define teventmajor	0                                                         
-%define teventver	0.9.3                                                     
+%define teventver	0.9.18
 %define ldbmajor	1
-%define ldbver		1.1.6
+%define ldbver		1.1.16
 %define dcerpcmajor	0
 %define dcerpcver	0.0.1
 %define hostconfigmajor	0
