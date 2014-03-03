@@ -1,0 +1,76 @@
+=== modules/vfs_default_quota.c
+==================================================================
+--- modules/vfs_default_quota.c	(revision 15550)
++++ modules/vfs_default_quota.c	(local)
+@@ -66,6 +66,13 @@
+  *     - default value: yes (that means to report NO_LIMIT)
+  *     - e.g.: default_quota:uid nolimit = no
+  *
++ * "<myprefix>:ignore set error" parameter takes a boolean argument,
++ *     it specifies if the module the should ignore error from the next
++ *     vfs module in the 'vfs objects' list.
++ *     
++ *     - default value: no
++ *     - e.g.: default_quota:ignore set error = yes
++ *
+  */
+ 
+ #include "includes.h"
+@@ -75,10 +82,11 @@
+ 
+ #define DEFAULT_QUOTA_NAME "default_quota"
+ 
+-#define DEFAULT_QUOTA_UID_DEFAULT		0
+-#define DEFAULT_QUOTA_UID_NOLIMIT_DEFAULT	True
+-#define DEFAULT_QUOTA_GID_DEFAULT		0
+-#define DEFAULT_QUOTA_GID_NOLIMIT_DEFAULT	True
++#define DEFAULT_QUOTA_UID_DEFAULT			0
++#define DEFAULT_QUOTA_UID_NOLIMIT_DEFAULT		True
++#define DEFAULT_QUOTA_GID_DEFAULT			0
++#define DEFAULT_QUOTA_GID_NOLIMIT_DEFAULT		True
++#define DEFAULT_QUOTA_IGNORE_FS_QUOTA_SET_ERROR_DEFAULT	False
+ 
+ #define DEFAULT_QUOTA_UID(handle) \
+ 	(uid_t)lp_parm_int(SNUM((handle)->conn),DEFAULT_QUOTA_NAME,"uid",DEFAULT_QUOTA_UID_DEFAULT)
+@@ -92,6 +100,10 @@
+ #define DEFAULT_QUOTA_GID_NOLIMIT(handle) \
+ 	lp_parm_bool(SNUM((handle)->conn),DEFAULT_QUOTA_NAME,"gid nolimit",DEFAULT_QUOTA_GID_NOLIMIT_DEFAULT)
+ 
++#define DEFAULT_QUOTA_IGNORE_FS_QUOTA_SET_ERROR(handle) \
++	lp_parm_bool(SNUM((handle)->conn),DEFAULT_QUOTA_NAME,"ignore fs quota set error",\
++		     DEFAULT_QUOTA_IGNORE_FS_QUOTA_SET_ERROR_DEFAULT)
++
+ static int default_quota_get_quota(vfs_handle_struct *handle, enum SMB_QUOTA_TYPE qtype, unid_t id, SMB_DISK_QUOTA *dq)
+ {
+ 	int ret = -1;
+@@ -148,6 +160,7 @@
+ 
+ static int default_quota_set_quota(vfs_handle_struct *handle, connection_struct *conn, enum SMB_QUOTA_TYPE qtype, unid_t id, SMB_DISK_QUOTA *dq)
+ {
++	BOOL ignore_set_error = False;
+ 	int ret = -1;
+ 
+ 	switch (qtype) {
+@@ -168,9 +181,11 @@
+ 			break;
+ #endif /* HAVE_GROUP_QUOTA */
+ 		case SMB_USER_FS_QUOTA_TYPE:
++			ignore_set_error = DEFAULT_QUOTA_IGNORE_FS_QUOTA_SET_ERROR(handle);
+ 			break;
+ #ifdef HAVE_GROUP_QUOTA
+ 		case SMB_GROUP_FS_QUOTA_TYPE:
++			ignore_set_error = DEFAULT_QUOTA_IGNORE_FS_QUOTA_SET_ERROR(handle);
+ 			break;
+ #endif /* HAVE_GROUP_QUOTA */
+ 		default:
+@@ -180,7 +195,9 @@
+ 	}
+ 
+ 	if ((ret=SMB_VFS_NEXT_SET_QUOTA(handle, qtype, id, dq))!=0) {
+-		return ret;
++		if (!ignore_set_error) {
++			return ret;
++		}
+ 	}
+ 
+ 	switch (qtype) {

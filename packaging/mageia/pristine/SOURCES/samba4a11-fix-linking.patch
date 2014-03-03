@@ -1,0 +1,213 @@
+diff -p -up samba-4.0.0alpha11/source4/build/make/templates.mk.orig samba-4.0.0alpha11/source4/build/make/templates.mk
+diff -p -up samba-4.0.0alpha11/source4/data.mk.orig samba-4.0.0alpha11/source4/data.mk
+--- samba-4.0.0alpha11/source4/data.mk.orig	2010-02-20 13:47:50.000000000 +0100
++++ samba-4.0.0alpha11/source4/data.mk	2010-02-21 23:41:07.000000000 +0100
+@@ -4877,6 +4877,7 @@ dcerpc_atsvc_LINK_FLAGS = \
+ 		$(LIBREPLACE_EXT_LIBS) \
+ 		$(LIBREPLACE_EXT_LDFLAGS) \
+ 		$(NDR_STANDARD_OUTPUT) \
++		$(LIBNDR_OUTPUT) \
+ 		$(dcerpc_OUTPUT)
+ $(eval $(call shared_library_template,$(shliboutputdir)/$(if $(dcerpc_atsvc_VERSION),libdcerpc_atsvc.$(SHLIBEXT).$(dcerpc_atsvc_VERSION),libdcerpc_atsvc.$(SHLIBEXT)), $(dcerpc_atsvc_DEPEND_LIST) $(dcerpc_atsvc_FULL_OBJ_LIST), $(dcerpc_atsvc_FULL_OBJ_LIST) $(dcerpc_atsvc_LINK_FLAGS),$(shliboutputdir)/$(if $(dcerpc_atsvc_SOVERSION),libdcerpc_atsvc.$(SHLIBEXT).$(dcerpc_atsvc_SOVERSION),libdcerpc_atsvc.$(SHLIBEXT)),$(shliboutputdir)/libdcerpc_atsvc.$(SHLIBEXT)))
+ pycredentials_FULL_OBJ_LIST = \
+@@ -5576,6 +5577,7 @@ dcerpc_samr_LINK_FLAGS = \
+ 		$(LIBREPLACE_EXT_LIBS) \
+ 		$(LIBREPLACE_EXT_LDFLAGS) \
+ 		$(NDR_STANDARD_OUTPUT) \
++		$(LIBNDR_OUTPUT) \
+ 		$(dcerpc_OUTPUT)
+ $(eval $(call shared_library_template,$(shliboutputdir)/$(if $(dcerpc_samr_VERSION),libdcerpc_samr.$(SHLIBEXT).$(dcerpc_samr_VERSION),libdcerpc_samr.$(SHLIBEXT)), $(dcerpc_samr_DEPEND_LIST) $(dcerpc_samr_FULL_OBJ_LIST), $(dcerpc_samr_FULL_OBJ_LIST) $(dcerpc_samr_LINK_FLAGS),$(shliboutputdir)/$(if $(dcerpc_samr_SOVERSION),libdcerpc_samr.$(SHLIBEXT).$(dcerpc_samr_SOVERSION),libdcerpc_samr.$(SHLIBEXT)),$(shliboutputdir)/libdcerpc_samr.$(SHLIBEXT)))
+ $(auth_OBJ_FILES): CFLAGS+=-DSTATIC_auth_MODULES="$(auth_INIT_FUNCTIONS)NULL"
+@@ -5704,11 +5706,16 @@ $(eval $(call shared_module_install_temp
+ ldb_simple_ldap_map_FULL_OBJ_LIST = \
+ 		$(ldb_simple_ldap_map_OBJ_FILES) \
+ 		bin/mergedobj/events.o \
++		bin/mergedobj/ldbsamba.o \
+ 		bin/mergedobj/replace.o
+ ldb_simple_ldap_map_DEPEND_LIST = \
+ 		$(shliboutputdir)/libndr.$(SHLIBEXT)
+ ldb_simple_ldap_map_LINK_FLAGS = \
++		$(GENSEC_LIBS) \
+ 		$(LIBNDR_OUTPUT) \
++		$(NDR_STANDARD_OUTPUT) \
++		$(LIBSAMBA-UTIL_OUTPUT) \
++		$(LIBSAMBA-HOSTCONFIG_OUTPUT) \
+ 		$(LIBTEVENT_LIBS) \
+ 		$(LIBTEVENT_LDFLAGS) \
+ 		$(LIBTALLOC_LIBS) \
+@@ -6506,6 +6513,10 @@ PLUGINS += bin/modules/ldb/$(if $(ldb_la
+ $(eval $(call shared_module_install_template,ldb,$(if $(ldb_lazy_commit_VERSION),lazy_commit.$(SHLIBEXT).$(ldb_lazy_commit_VERSION),lazy_commit.$(SHLIBEXT))))
+ ldb_lazy_commit_FULL_OBJ_LIST = \
+ 		$(ldb_lazy_commit_OBJ_FILES) \
++		bin/mergedobj/dsdb_module_helpers.o \
++		bin/mergedobj/cluster.o \
++		bin/mergedobj/ndr_irpc.o \
++		bin/mergedobj/rpc_ndr_drsuapi.o \
+ 		bin/mergedobj/samdb.o \
+ 		bin/mergedobj/cli_drsuapi.o \
+ 		bin/mergedobj/ldb_wrap.o \
+@@ -6573,6 +6584,7 @@ ldb_lazy_commit_FULL_OBJ_LIST = \
+ 		bin/mergedobj/uid_wrapper.o \
+ 		bin/mergedobj/heimdal_roken_closefrom.o \
+ 		bin/mergedobj/heimdal_roken_progname.o \
++		bin/mergedobj/messaging.o \
+ 		bin/mergedobj/replace.o
+ ldb_lazy_commit_DEPEND_LIST = \
+ 		$(shliboutputdir)/libndr_standard.$(SHLIBEXT) \
+@@ -6611,6 +6623,7 @@ ldb_lazy_commit_LINK_FLAGS = \
+ 		$(LIBREPLACE_EXT_LIBS) \
+ 		$(LIBREPLACE_EXT_LDFLAGS) \
+ 		$(LIBLDB_LIBS) \
++		-ldcerpc \
+ 		$(LIBLDB_LDFLAGS)
+ $(eval $(call shared_module_template,bin/modules/ldb/$(if $(ldb_lazy_commit_VERSION),lazy_commit.$(SHLIBEXT).$(ldb_lazy_commit_VERSION),lazy_commit.$(SHLIBEXT)), $(ldb_lazy_commit_DEPEND_LIST) $(ldb_lazy_commit_FULL_OBJ_LIST), $(ldb_lazy_commit_FULL_OBJ_LIST) $(ldb_lazy_commit_LINK_FLAGS)))
+ PLUGINS += bin/modules/ldb/$(if $(ldb_objectguid_VERSION),objectguid.$(SHLIBEXT).$(ldb_objectguid_VERSION),objectguid.$(SHLIBEXT))
+@@ -6728,6 +6741,11 @@ PLUGINS += bin/modules/ldb/$(if $(ldb_in
+ $(eval $(call shared_module_install_template,ldb,$(if $(ldb_instancetype_VERSION),instancetype.$(SHLIBEXT).$(ldb_instancetype_VERSION),instancetype.$(SHLIBEXT))))
+ ldb_instancetype_FULL_OBJ_LIST = \
+ 		$(ldb_instancetype_OBJ_FILES) \
++		bin/mergedobj/dsdb_module_helpers.o \
++		bin/mergedobj/messaging.o \
++		bin/mergedobj/cluster.o \
++		bin/mergedobj/ndr_irpc.o \
++		bin/mergedobj/unix_privs.o \
+ 		bin/mergedobj/samdb.o \
+ 		bin/mergedobj/cli_drsuapi.o \
+ 		bin/mergedobj/ldb_wrap.o \
+@@ -7081,6 +7099,7 @@ param_LINK_FLAGS = \
+ 		$(LIBTALLOC_LDFLAGS) \
+ 		$(EXT_LIB_PYTHON_LIBS) \
+ 		$(EXT_LIB_PYTHON_LDFLAGS) \
++		$(LIBSAMBA-UTIL_OUTPUT) \
+ 		$(LIBSAMBA-HOSTCONFIG_OUTPUT)
+ $(eval $(call python_c_module_template,samba/param.$(SHLIBEXT),$(param_DEPEND_LIST) $(param_FULL_OBJ_LIST), $(param_FULL_OBJ_LIST) $(param_LINK_FLAGS)))
+ $(service_OBJ_FILES): CFLAGS+=-DSTATIC_service_MODULES="$(service_INIT_FUNCTIONS)NULL"
+@@ -7493,6 +7512,15 @@ PLUGINS += bin/modules/ldb/$(if $(ldb_sh
+ $(eval $(call shared_module_install_template,ldb,$(if $(ldb_show_deleted_VERSION),show_deleted.$(SHLIBEXT).$(ldb_show_deleted_VERSION),show_deleted.$(SHLIBEXT))))
+ ldb_show_deleted_FULL_OBJ_LIST = \
+ 		$(ldb_show_deleted_OBJ_FILES) \
++		bin/mergedobj/dsdb_module_helpers.o \
++		bin/mergedobj/samdb_schema.o \
++		bin/mergedobj/samdb_common.o \
++		bin/mergedobj/security_common.o \
++		bin/mergedobj/messaging.o \
++		bin/mergedobj/security.o \
++		bin/mergedobj/samba_socket.o \
++		bin/mergedobj/ldbsamba.o \
++		bin/mergedobj/cli_composite.o \
+ 		bin/mergedobj/events.o \
+ 		bin/mergedobj/replace.o
+ ldb_show_deleted_DEPEND_LIST = \
+@@ -7508,6 +7536,9 @@ ldb_show_deleted_LINK_FLAGS = \
+ 		$(LIBREPLACE_EXT_LIBS) \
+ 		$(LIBREPLACE_EXT_LDFLAGS) \
+ 		$(LIBLDB_LIBS) \
++		$(LIBSAMBA-HOSTCONFIG_OUTPUT) \
++		$(LIBNDR_OUTPUT) \
++		$(dcerpc_OUTPUT) \
+ 		$(LIBLDB_LDFLAGS)
+ $(eval $(call shared_module_template,bin/modules/ldb/$(if $(ldb_show_deleted_VERSION),show_deleted.$(SHLIBEXT).$(ldb_show_deleted_VERSION),show_deleted.$(SHLIBEXT)), $(ldb_show_deleted_DEPEND_LIST) $(ldb_show_deleted_FULL_OBJ_LIST), $(ldb_show_deleted_FULL_OBJ_LIST) $(ldb_show_deleted_LINK_FLAGS)))
+ PLUGINS += bin/modules/ldb/$(if $(ldb_schema_load_VERSION),schema_load.$(SHLIBEXT).$(ldb_schema_load_VERSION),schema_load.$(SHLIBEXT))
+@@ -8089,10 +8120,12 @@ NDR_STANDARD_DEPEND_LIST = \
+ NDR_STANDARD_LINK_FLAGS = \
+ 		$(TALLOC_LIBS) \
+ 		$(TALLOC_LDFLAGS) \
++		$(LIBSAMBA-HOSTCONFIG_OUTPUT) \
+ 		$(LIBREPLACE_NETWORK_LIBS) \
+ 		$(LIBREPLACE_NETWORK_LDFLAGS) \
+ 		$(LIBREPLACE_EXT_LIBS) \
+ 		$(LIBREPLACE_EXT_LDFLAGS) \
++		$(LIBSAMBA-UTIL_OUTPUT) \
+ 		$(LIBNDR_OUTPUT)
+ $(eval $(call shared_library_template,$(shliboutputdir)/$(if $(NDR_STANDARD_VERSION),libndr_standard.$(SHLIBEXT).$(NDR_STANDARD_VERSION),libndr_standard.$(SHLIBEXT)), $(NDR_STANDARD_DEPEND_LIST) $(NDR_STANDARD_FULL_OBJ_LIST), $(NDR_STANDARD_FULL_OBJ_LIST) $(NDR_STANDARD_LINK_FLAGS),$(shliboutputdir)/$(if $(NDR_STANDARD_SOVERSION),libndr_standard.$(SHLIBEXT).$(NDR_STANDARD_SOVERSION),libndr_standard.$(SHLIBEXT)),$(shliboutputdir)/libndr_standard.$(SHLIBEXT)))
+ PLUGINS += bin/modules/ldb/$(if $(ldb_samba_secrets_VERSION),samba_secrets.$(SHLIBEXT).$(ldb_samba_secrets_VERSION),samba_secrets.$(SHLIBEXT))
+@@ -8342,6 +8375,10 @@ PLUGINS += bin/modules/ldb/$(if $(ldb_ac
+ $(eval $(call shared_module_install_template,ldb,$(if $(ldb_acl_VERSION),acl.$(SHLIBEXT).$(ldb_acl_VERSION),acl.$(SHLIBEXT))))
+ ldb_acl_FULL_OBJ_LIST = \
+ 		$(ldb_acl_OBJ_FILES) \
++		bin/mergedobj/dsdb_module_helpers.o \
++		bin/mergedobj/messaging.o \
++		bin/mergedobj/cluster.o \
++		bin/mergedobj/unix_privs.o \
+ 		bin/mergedobj/samdb.o \
+ 		bin/mergedobj/cli_drsuapi.o \
+ 		bin/mergedobj/ldb_wrap.o \
+@@ -8447,6 +8484,7 @@ ldb_acl_LINK_FLAGS = \
+ 		$(LIBREPLACE_EXT_LIBS) \
+ 		$(LIBREPLACE_EXT_LDFLAGS) \
+ 		$(LIBLDB_LIBS) \
++		$(dcerpc_OUTPUT) \
+ 		$(LIBLDB_LDFLAGS)
+ $(eval $(call shared_module_template,bin/modules/ldb/$(if $(ldb_acl_VERSION),acl.$(SHLIBEXT).$(ldb_acl_VERSION),acl.$(SHLIBEXT)), $(ldb_acl_DEPEND_LIST) $(ldb_acl_FULL_OBJ_LIST), $(ldb_acl_FULL_OBJ_LIST) $(ldb_acl_LINK_FLAGS)))
+ SHARED_LIBS += $(shliboutputdir)/$(if $(gensec_VERSION),libgensec.$(SHLIBEXT).$(gensec_VERSION),libgensec.$(SHLIBEXT))
+@@ -10085,6 +10123,8 @@ PLUGINS += bin/modules/ldb/$(if $(ldb_sa
+ $(eval $(call shared_module_install_template,ldb,$(if $(ldb_samba3sid_VERSION),samba3sid.$(SHLIBEXT).$(ldb_samba3sid_VERSION),samba3sid.$(SHLIBEXT))))
+ ldb_samba3sid_FULL_OBJ_LIST = \
+ 		$(ldb_samba3sid_OBJ_FILES) \
++		bin/mergedobj/dsdb_module_helpers.o \
++		bin/mergedobj/samdb_common.o \
+ 		bin/mergedobj/ndr_security.o \
+ 		bin/mergedobj/security.o \
+ 		bin/mergedobj/security_common.o \
+@@ -10113,6 +10153,8 @@ ldb_samba3sid_LINK_FLAGS = \
+ 		$(LIBREPLACE_EXT_LIBS) \
+ 		$(LIBREPLACE_EXT_LDFLAGS) \
+ 		$(LIBLDB_LIBS) \
++		$(LIBSAMBA-HOSTCONFIG_OUTPUT) \
++		$(dcerpc_OUTPUT) \
+ 		$(LIBLDB_LDFLAGS)
+ $(eval $(call shared_module_template,bin/modules/ldb/$(if $(ldb_samba3sid_VERSION),samba3sid.$(SHLIBEXT).$(ldb_samba3sid_VERSION),samba3sid.$(SHLIBEXT)), $(ldb_samba3sid_DEPEND_LIST) $(ldb_samba3sid_FULL_OBJ_LIST), $(ldb_samba3sid_FULL_OBJ_LIST) $(ldb_samba3sid_LINK_FLAGS)))
+ $(eval $(call binary_install_template,bin/ntlm_auth))
+@@ -10409,6 +10451,7 @@ registry_LINK_FLAGS = \
+ 		$(LIBLDB_LDFLAGS) \
+ 		$(LIBTALLOC_LIBS) \
+ 		$(LIBTALLOC_LDFLAGS) \
++		$(LIBTDB_LIBS) \
+ 		$(ICONV_LIBS) \
+ 		$(ICONV_LDFLAGS) \
+ 		$(LIBSAMBA-UTIL_OUTPUT)
+@@ -12091,6 +12134,7 @@ LIBSAMBA-HOSTCONFIG_LINK_FLAGS = \
+ 		$(LIBREPLACE_NETWORK_LDFLAGS) \
+ 		$(LIBREPLACE_EXT_LIBS) \
+ 		$(LIBREPLACE_EXT_LDFLAGS) \
++		$(LIBTALLOC_LIBS) \
+ 		$(LIBSAMBA-UTIL_OUTPUT)
+ $(eval $(call shared_library_template,$(shliboutputdir)/$(if $(LIBSAMBA-HOSTCONFIG_VERSION),libsamba-hostconfig.$(SHLIBEXT).$(LIBSAMBA-HOSTCONFIG_VERSION),libsamba-hostconfig.$(SHLIBEXT)), $(LIBSAMBA-HOSTCONFIG_DEPEND_LIST) $(LIBSAMBA-HOSTCONFIG_FULL_OBJ_LIST), $(LIBSAMBA-HOSTCONFIG_FULL_OBJ_LIST) $(LIBSAMBA-HOSTCONFIG_LINK_FLAGS),$(shliboutputdir)/$(if $(LIBSAMBA-HOSTCONFIG_SOVERSION),libsamba-hostconfig.$(SHLIBEXT).$(LIBSAMBA-HOSTCONFIG_SOVERSION),libsamba-hostconfig.$(SHLIBEXT)),$(shliboutputdir)/libsamba-hostconfig.$(SHLIBEXT)))
+ python_initshutdown_FULL_OBJ_LIST = \
+@@ -12357,6 +12401,7 @@ python_uuid_FULL_OBJ_LIST = \
+ python_uuid_DEPEND_LIST = \
+ 		$(shliboutputdir)/libndr.$(SHLIBEXT)
+ python_uuid_LINK_FLAGS = \
++		$(LIBTALLOC_LIBS) \
+ 		$(LIBNDR_OUTPUT)
+ $(eval $(call python_c_module_template,uuid.$(SHLIBEXT),$(python_uuid_DEPEND_LIST) $(python_uuid_FULL_OBJ_LIST), $(python_uuid_FULL_OBJ_LIST) $(python_uuid_LINK_FLAGS)))
+ python_dcerpc_nbt_FULL_OBJ_LIST = \
+@@ -14141,6 +14186,7 @@ pygensec_FULL_OBJ_LIST = \
+ 		$(pygensec_OBJ_FILES) \
+ 		bin/mergedobj/pyparam_util.o \
+ 		bin/mergedobj/python.o \
++		bin/mergedobj/charset.o \
+ 		bin/mergedobj/pytalloc.o
+ pygensec_DEPEND_LIST = \
+ 		$(shliboutputdir)/libgensec.$(SHLIBEXT)
+@@ -14149,6 +14195,9 @@ pygensec_LINK_FLAGS = \
+ 		$(LIBTALLOC_LDFLAGS) \
+ 		$(EXT_LIB_PYTHON_LIBS) \
+ 		$(EXT_LIB_PYTHON_LDFLAGS) \
++		$(LIBSAMBA-HOSTCONFIG_OUTPUT) \
++		$(LIBTEVENT_LIBS) \
++		$(LIBSAMBA-UTIL_OUTPUT) \
+ 		$(gensec_OUTPUT)
+ $(eval $(call python_c_module_template,samba/gensec.$(SHLIBEXT),$(pygensec_DEPEND_LIST) $(pygensec_FULL_OBJ_LIST), $(pygensec_FULL_OBJ_LIST) $(pygensec_LINK_FLAGS)))
+ MK_FILES =  \
+diff -p -up samba-4.0.0alpha11/source4/mkconfig.mk.orig samba-4.0.0alpha11/source4/mkconfig.mk
+--- samba-4.0.0alpha11/source4/mkconfig.mk.orig	2010-02-20 13:47:51.000000000 +0100
++++ samba-4.0.0alpha11/source4/mkconfig.mk	2010-02-20 19:02:12.000000000 +0100
+@@ -275,6 +275,7 @@ TALLOC_LIBS = -ltalloc
+ TALLOC_CFLAGS = 
+ TALLOC_OBJ = 
+ tallocdir = 
++GENSEC_LIBS=-lgensec
+ PKG_CONFIG = /usr/bin/pkg-config
+ HAVE_PERL_EXTUTILS_MAKEMAKER = 1
+ POPT_OBJ = 
