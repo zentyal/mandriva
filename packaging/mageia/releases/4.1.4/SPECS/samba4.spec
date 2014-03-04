@@ -117,11 +117,11 @@
 %if "%{distepoch}" < "2012.0"
 %define build_talloc 1
 %else
-%define build_talloc 0
+%define build_talloc 1
 %endif
-%define build_tdb 0
-%define build_tevent 0
-%define build_ldb 0
+%define build_tdb 1
+%define build_tevent 1
+%define build_ldb 1
 %define build_alternatives	0
 %define build_system	0
 %define build_acl 	1
@@ -146,7 +146,7 @@
 %{?_without_system: %global build_system 0}
 %{?_with_acl: %global build_acl 1}
 %{?_with_acl: %global build_non_default 1}
-%{?_without_acl: %global build_acl 0}
+%{?_without_acl: %global build_acl 1}
 %{?_without_acl: %global build_non_default 1}
 %{?_with_winbind: %global build_winbind 1}
 %{?_with_winbind: %global build_non_default 1}
@@ -1366,7 +1366,6 @@ CC="%__cc $EXTRAFLAGS" CXX="%__cc $EXTRAFLAGS" buildtools/bin/waf configure --en
 %if !%build_system
         --private-libraries=smbclient,wbclient,netapi,smbsharemodes \
 %endif
-	--enable-talloc-compat1 \
 	--enable-gnutls \
 	--enable-cups \
 	--with-pam \
