@@ -273,9 +273,9 @@ Release: %{release}
 License: GPL
 Group: System/Servers
 URL:	http://www.samba.org
-Source0: http://www.samba.org/samba/ftp/samba4/samba-%{source_ver}.tar.gz
-Source99: http://www.samba.org/samba/ftp/samba4/samba-%{source_ver}.tar.asc
-Source98: http://www.samba.org/samba/ftp/samba-pubkey.asc
+Source0: http://ftp.samba.org/pub/samba/stable/samba-%{source_ver}.tar.gz
+Source99: http://ftp.samba.org/pub/samba/stable/samba-%{source_ver}.tar.asc
+Source98: https://ftp.samba.org/pub/samba/samba-pubkey.asc
 Source1: samba.log
 Source3: samba.xinetd
 %if %build_swat
