@@ -112,7 +112,7 @@
 
 # Default options
 %global build_doc 0
-%global build_swat 1
+%global build_swat 0
 %global build_cifs 0
 %if "%{distepoch}" < "2012.0"
 %define build_talloc 1
