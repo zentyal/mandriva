@@ -288,8 +288,8 @@ Source6: swat_48.png
 ##BuildRequires: magic-devel
 # For -fuse-ld
 BuildRequires: gcc >= 4.7
-Source10: samba-print-pdf.sh.bz2
-Source11: smb-migrate.bz2
+##Source10: samba-print-pdf.sh.bz2
+##Source11: smb-migrate.bz2
 Source100: %name.rpmlintrc
 
 #Sources that used to be in packaging patch:
@@ -1547,7 +1547,7 @@ cat %{SOURCE5} > %{buildroot}%{_iconsdir}/swat%{samba_major}.png
 cat %{SOURCE6} > %{buildroot}%{_liconsdir}/swat%{samba_major}.png
 %endif
 
-bzcat %{SOURCE10}> %{buildroot}%{_datadir}/%name/scripts/print-pdf
+##bzcat %{SOURCE10}> %{buildroot}%{_datadir}/%name/scripts/print-pdf
 #bzcat %{SOURCE11}> %{buildroot}%{_datadir}/samba/scripts/smb-migrate
 
 # Move some stuff where it belongs...
@@ -1780,7 +1780,7 @@ update-alternatives --auto mount.cifs
 %if %build_vscan
 %exclude %{_libdir}/%{name}/vfs/vscan*.so
 %endif
-%{_libdir}/samba4/fi.msg
+##%{_libdir}/samba4/fi.msg
 #dir %{_libdir}/%{name}/pdb
 %{_libdir}/%{name}/ldb
 %{_libdir}/%{name}/service
@@ -1789,8 +1789,8 @@ update-alternatives --auto mount.cifs
 %{_libdir}/%{name}/auth
 %{_libdir}/%{name}/bind9
 %{_libdir}/%{name}/genmsg
-%lang(ru) %_libdir/%name/ru.msg
-%lang(ru) %_libdir/%name/ru
+##%lang(ru) %_libdir/%name/ru.msg
+##%lang(ru) %_libdir/%name/ru
 %{_libdir}/%{name}/*.so*
 %if %build_ldb
 %exclude %_libdir/%name/libldb.so.*
