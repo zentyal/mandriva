@@ -1387,18 +1387,22 @@ rm -rf %{buildroot}
 mkdir -p %{buildroot}
 
 # Put stuff where it should go.
+%if %build_swat
 mkdir -p %buildroot/%{_datadir}/swat4/include
 mkdir -p %buildroot/%{_datadir}/swat4/images
 mkdir -p %buildroot/%{_datadir}/swat4/lang
+%endif
 mkdir -p %buildroot/%{_libdir}/samba4/
 mkdir -p %buildroot/%{_datadir}/man/man8/
 
 
+%if %build_swat
 cp -R swat/include 	       		%buildroot/%{_datadir}/swat4/include
 cp -R swat/images              		%buildroot/%{_datadir}/swat4/images
 cp -R swat/lang                		%buildroot/%{_datadir}/swat4
 cp -R source3/po/*             		%buildroot/%{_libdir}/samba4/
 cp docs-xml/manpages-3/swat.8.xml 	%buildroot/%{_datadir}/man/man8/
+%endif
 
 # Any entries here mean samba makefile is *really* broken:
 mkdir -p %{buildroot}%{_sysconfdir}/%{name}
@@ -1411,8 +1415,10 @@ if [ -e %buildroot%_libdir/security ]; then
 	mkdir -p %{buildroot}/%_lib
 	mv %buildroot%_libdir/security %buildroot/%_lib
 fi
+%if %build_swat
 # we ship docs in the docs supackage, and lik it into swat, delete the extra copy:
 rm -Rf %{buildroot}/%{_datadir}/swat/using_samba
+%endif
 
 #Even though we tell waf above where to put perl it gets it wrong
 mkdir -p %{buildroot}/%{perl_vendorlib}
