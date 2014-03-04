@@ -1339,7 +1339,7 @@ echo "Applying patches for current version: %{ver}"
 # Version specific patches: upcoming version
 echo "Applying patches for new versions: %{pversion}"
 %endif
-%patch1 -p1 -b .compile~
+##%patch1 -p1 -b .compile~
 
 %build
 %serverbuild
