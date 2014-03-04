@@ -1308,9 +1308,9 @@ VERIFYSOURCE=%{_tmppath}/${VERIFYSOURCE%%.gz}
 gzip -dc %{SOURCE0} > $VERIFYSOURCE
 pushd %{_tmppath}
 cp %{SOURCE99} .
-#gpg --trust-model always --verify `basename %{SOURCE99}`
-#VERIFIED=$?
-VERIFIED=1
+gpg --trust-model always --verify `basename %{SOURCE99}`
+VERIFIED=$?
+#VERIFIED=1
 rm -f `basename %{SOURCE99}`
 popd
 rm -Rf $GNUPGHOME
