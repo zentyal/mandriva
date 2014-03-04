@@ -9,6 +9,10 @@ Samba/OpenChange modules for MBS
 * MDS development: [http://projects.mandriva.org/projects/mmc/wiki/MDS\_Development]
 * MMC development: [http://mandriva-management-console.readthedocs.org/en/latest/]
 
+### Core development resources
+* [http://mandriva-management-console.readthedocs.org/en/latest/devel/python-module.html]
+* [http://mandriva-management-console.readthedocs.org/en/latest/devel/php-module.html]
+
 # Mandriva MBS module 
 
 Mandriva MBS is the SMB Mandriva product. From a global perspective, it is similar to Zentyal. It provides a Linux distribution with a web-based configuration and administration interface and integrates a mechanism of plugins to extend the capabilities of the default installation. Their applications/modules are however distributed through an application store, similar to Apple, Google, or Samsung store.
