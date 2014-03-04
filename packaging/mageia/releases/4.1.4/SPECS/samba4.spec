@@ -247,8 +247,8 @@
 #Define sets of binaries that we can use in globs and loops:
 %global commonbin ntlm_auth,testparm,regdiff,regpatch,regshell,regtree
 
-%global serverbin 	oLschema2ldif
-%global serversbin samba,provision,upgradeprovision,samba_dnsupdate,samba_spnupdate
+%global serverbin 	samba-tool,oLschema2ldif
+%global serversbin samba,nmbd,smbd,samba_dnsupdate,samba_spnupdate
 
 %global clientbin 	samba-tool,nmblookup,smbclient,cifsdd
 %global client_sbin 	mount.smb,mount.smbfs
