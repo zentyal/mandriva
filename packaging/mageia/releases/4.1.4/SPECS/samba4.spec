@@ -285,7 +285,7 @@ Source6: swat_48.png
 %endif
 #Source7: README.%{name}-mandrake-rpm
 #Source8: samba-vscan-%{vscanver}.tar.gz
-BuildRequires: magic-devel
+##BuildRequires: magic-devel
 # For -fuse-ld
 BuildRequires: gcc >= 4.7
 Source10: samba-print-pdf.sh.bz2
@@ -317,14 +317,14 @@ Patch1:		samba-4.0.0a20-compile.patch
 %if %have_pversion && %have_pre
 %endif
 Requires: pam >= 0.64, samba-common = %{version}
-BuildRequires: pam-devel readline-devel ncurses-devel popt-devel
-BuildRequires: libxml2-devel
+##BuildRequires: pam-devel readline-devel ncurses-devel popt-devel
+##BuildRequires: libxml2-devel
 # Samba 3.2 and later should be built with capabilities support:
 # http://lists.samba.org/archive/samba/2009-March/146821.html
-BuildRequires: libcap-devel
-BuildRequires: gnupg
+##BuildRequires: libcap-devel
+##BuildRequires: gnupg
 # Required for ldb docs
-BuildRequires: xsltproc docbook-style-xsl
+##BuildRequires: xsltproc docbook-style-xsl
 %if %build_pgsql
 BuildRequires: postgresql-devel
 %endif
@@ -340,7 +340,7 @@ BuildRequires: libldap-devel
 %if %build_ads
 BuildRequires: libldap-devel krb5-devel
 %endif
-BuildRequires: keyutils-devel
+##BuildRequires: keyutils-devel
 %if %build_tdb != 1
 BuildRequires: pkgconfig(tdb) >= 1.2.1
 %else
@@ -756,7 +756,7 @@ Group: Development/C
 Summary: Library implementing Samba's memory allocator
 Provides: talloc-devel = %{version}-%{release}
 Requires: %libtalloc = %{version}-%{release}
-BuildRequires: swig
+##BuildRequires: swig
 
 %description -n %tallocdevel
 Library implementing Samba's memory allocator
