@@ -72,6 +72,7 @@ Authors:
 %prep
 %setup -q -n samba-%{version}
 #%patch0 -p1 
+%{__rm} -rf %{buildroot}
 
 %build
   CFLAGS="${CFLAGS:-%optflags}" ; export CFLAGS ; \
@@ -318,7 +319,7 @@ chmod +x /etc/init.d/samba4
 
 
 %clean
-%{__rm} -rf %{buildroot}
+#%{__rm} -rf %{buildroot}
 
 %files
 %defattr(-, root, root)
