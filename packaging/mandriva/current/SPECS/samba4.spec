@@ -91,7 +91,7 @@ sed -i -e "s|, '-Wl,--no-undefined'||g" bin/c4che/default.cache.py
 %__make %{?jobs:-j%jobs}
 
 %install
-%{makeinstall}
+%{make_install}
 %__mkdir_p %{buildroot}%{_localstatedir}/run
 %__mkdir_p %{buildroot}%{_localstatedir}/lib
 %__mkdir_p %{buildroot}/etc/ld.so.conf.d/
