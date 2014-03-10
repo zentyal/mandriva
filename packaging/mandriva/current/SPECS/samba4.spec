@@ -44,6 +44,9 @@ BuildRequires:  pkgconfig
 BuildRequires:  lib64gnutls-devel lib64pam-devel lib64popt-devel lib64python-devel lib64readline-devel lib64acl-devel
 Requires:       python >= 2.5, perl
 AutoReqProv:    on
+Provides:       samba4 = %{version}
+Obsoletes:      samba4 < %{version}, samba-client, samba-common, samba-doc, samba-domainjoin-gui, samba-server, samba-swat
+Obsoletes:      samba-virusfilter-clamav, samba-virusfilter-fsecure, samba-virusfilter-sophos, samba-winbind
 
 %description
 Samba 4 beta built so that it does not interfere with system.
