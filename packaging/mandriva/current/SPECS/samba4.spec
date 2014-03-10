@@ -109,6 +109,69 @@ sed -i -e "s|, '-Wl,--no-undefined'||g" bin/c4che/default.cache.py
 %__mkdir_p %{buildroot}/%{_prefix}/etc/
 %__mkdir_p %{buildroot}/%{_prefix}/private/
 
+# symlink samba/sbin
+%__mkdir_p %{buildroot}/%{_sbindir}/
+%__ln_s %{buildroot}/%{_local_sbindir}/nmbd %{buildroot}/%{_sbindir}/
+%__ln_s %{buildroot}/%{_local_sbindir}/samba %{buildroot}/%{_sbindir}/
+%__ln_s %{buildroot}/%{_local_sbindir}/samba_dnsupdate %{buildroot}/%{_sbindir}/
+%__ln_s %{buildroot}/%{_local_sbindir}/samba_kcc %{buildroot}/%{_sbindir}/
+%__ln_s %{buildroot}/%{_local_sbindir}/samba_spnupdate %{buildroot}/%{_sbindir}/
+%__ln_s %{buildroot}/%{_local_sbindir}/samba_upgradedns %{buildroot}/%{_sbindir}/
+%__ln_s %{buildroot}/%{_local_sbindir}/smbd %{buildroot}/%{_sbindir}/
+%__ln_s %{buildroot}/%{_local_sbindir}/winbindd %{buildroot}/%{_sbindir}/
+
+%__mkdir_p %{buildroot}/%{_bindir}/
+%__ln_s %{buildroot}/%{_local_bindir}/cifsdd %{buildroot}/%{_bindir}/
+%__ln_s %{buildroot}/%{_local_bindir}/dbwrap_tool %{buildroot}/%{_bindir}/
+%__ln_s %{buildroot}/%{_local_bindir}/eventlogadm %{buildroot}/%{_bindir}/
+%__ln_s %{buildroot}/%{_local_bindir}/gentest %{buildroot}/%{_bindir}/
+%__ln_s %{buildroot}/%{_local_bindir}/ldbadd %{buildroot}/%{_bindir}/
+%__ln_s %{buildroot}/%{_local_bindir}/ldbdel %{buildroot}/%{_bindir}/
+%__ln_s %{buildroot}/%{_local_bindir}/ldbedit %{buildroot}/%{_bindir}/
+%__ln_s %{buildroot}/%{_local_bindir}/ldbmodify %{buildroot}/%{_bindir}/
+%__ln_s %{buildroot}/%{_local_bindir}/ldbrename %{buildroot}/%{_bindir}/
+%__ln_s %{buildroot}/%{_local_bindir}/ldbsearch %{buildroot}/%{_bindir}/
+%__ln_s %{buildroot}/%{_local_bindir}/locktest %{buildroot}/%{_bindir}/
+%__ln_s %{buildroot}/%{_local_bindir}/masktest %{buildroot}/%{_bindir}/
+%__ln_s %{buildroot}/%{_local_bindir}/ndrdump %{buildroot}/%{_bindir}/
+%__ln_s %{buildroot}/%{_local_bindir}/net %{buildroot}/%{_bindir}/
+%__ln_s %{buildroot}/%{_local_bindir}/nmblookup %{buildroot}/%{_bindir}/
+%__ln_s %{buildroot}/%{_local_bindir}/nmblookup4 %{buildroot}/%{_bindir}/
+%__ln_s %{buildroot}/%{_local_bindir}/ntdbbackup %{buildroot}/%{_bindir}/
+%__ln_s %{buildroot}/%{_local_bindir}/ntdbdump %{buildroot}/%{_bindir}/
+%__ln_s %{buildroot}/%{_local_bindir}/ntdbrestore %{buildroot}/%{_bindir}/
+%__ln_s %{buildroot}/%{_local_bindir}/ntdbtool %{buildroot}/%{_bindir}/
+%__ln_s %{buildroot}/%{_local_bindir}/ntlm_auth %{buildroot}/%{_bindir}/
+%__ln_s %{buildroot}/%{_local_bindir}/oLschema2ldif %{buildroot}/%{_bindir}/
+%__ln_s %{buildroot}/%{_local_bindir}/pdbedit %{buildroot}/%{_bindir}/
+%__ln_s %{buildroot}/%{_local_bindir}/pidl %{buildroot}/%{_bindir}/
+%__ln_s %{buildroot}/%{_local_bindir}/profiles %{buildroot}/%{_bindir}/
+%__ln_s %{buildroot}/%{_local_bindir}/regdiff %{buildroot}/%{_bindir}/
+%__ln_s %{buildroot}/%{_local_bindir}/regpatch %{buildroot}/%{_bindir}/
+%__ln_s %{buildroot}/%{_local_bindir}/regshell %{buildroot}/%{_bindir}/
+%__ln_s %{buildroot}/%{_local_bindir}/regtree %{buildroot}/%{_bindir}/
+%__ln_s %{buildroot}/%{_local_bindir}/rpcclient %{buildroot}/%{_bindir}/
+%__ln_s %{buildroot}/%{_local_bindir}/samba-tool %{buildroot}/%{_bindir}/
+%__ln_s %{buildroot}/%{_local_bindir}/sharesec %{buildroot}/%{_bindir}/
+%__ln_s %{buildroot}/%{_local_bindir}/smbcacls %{buildroot}/%{_bindir}/
+%__ln_s %{buildroot}/%{_local_bindir}/smbclient %{buildroot}/%{_bindir}/
+%__ln_s %{buildroot}/%{_local_bindir}/smbclient4 %{buildroot}/%{_bindir}/
+%__ln_s %{buildroot}/%{_local_bindir}/smbcontrol %{buildroot}/%{_bindir}/
+%__ln_s %{buildroot}/%{_local_bindir}/smbcquotas %{buildroot}/%{_bindir}/
+%__ln_s %{buildroot}/%{_local_bindir}/smbget %{buildroot}/%{_bindir}/
+%__ln_s %{buildroot}/%{_local_bindir}/smbpasswd %{buildroot}/%{_bindir}/
+%__ln_s %{buildroot}/%{_local_bindir}/smbspool %{buildroot}/%{_bindir}/
+%__ln_s %{buildroot}/%{_local_bindir}/smbstatus %{buildroot}/%{_bindir}/
+%__ln_s %{buildroot}/%{_local_bindir}/smbtar %{buildroot}/%{_bindir}/
+%__ln_s %{buildroot}/%{_local_bindir}/smbta-util %{buildroot}/%{_bindir}/
+%__ln_s %{buildroot}/%{_local_bindir}/smbtorture %{buildroot}/%{_bindir}/
+%__ln_s %{buildroot}/%{_local_bindir}/smbtree %{buildroot}/%{_bindir}/
+%__ln_s %{buildroot}/%{_local_bindir}/tdbbackup %{buildroot}/%{_bindir}/
+%__ln_s %{buildroot}/%{_local_bindir}/tdbdump %{buildroot}/%{_bindir}/
+%__ln_s %{buildroot}/%{_local_bindir}/tdbrestore %{buildroot}/%{_bindir}/
+%__ln_s %{buildroot}/%{_local_bindir}/tdbtool %{buildroot}/%{_bindir}/
+%__ln_s %{buildroot}/%{_local_bindir}/testparm %{buildroot}/%{_bindir}/
+%__ln_s %{buildroot}/%{_local_bindir}/wbinfo %{buildroot}/%{_bindir}/
 
 
 %post
