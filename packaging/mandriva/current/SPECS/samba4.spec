@@ -66,7 +66,26 @@ Authors:
 #%patch0 -p1 
 
 %build
-%configure --prefix=%{_prefix}
+  CFLAGS="${CFLAGS:-%optflags}" ; export CFLAGS ; \
+  CXXFLAGS="${CXXFLAGS:-%optflags}" ; export CXXFLAGS ; \
+  FFLAGS="${FFLAGS:-%optflags}" ; export FFLAGS ; \
+  %{_configure} --host=%{_host} --build=%{_build} \
+        --prefix=%{_prefix} 
+#        --program-prefix=%{?_program_prefix} \
+#        --disable-dependency-tracking \
+#        --prefix=%{_prefix} \
+#        --exec-prefix=%{_exec_prefix} \
+#        --bindir=%{_bindir} \
+#        --sbindir=%{_sbindir} \
+#        --sysconfdir=%{_sysconfdir} \
+#        --datadir=%{_datadir} \
+#        --includedir=%{_includedir} \
+#        --libdir=%{_libdir} \
+#        --libexecdir=%{_libexecdir} \
+#        --localstatedir=%{_localstatedir} \
+#        --sharedstatedir=%{_sharedstatedir} \
+#        --mandir=%{_mandir} \
+#        --infodir=%{_infodir}
 %__make %{?jobs:-j%jobs}
 
 %install
