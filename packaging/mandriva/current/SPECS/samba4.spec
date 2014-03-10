@@ -328,6 +328,8 @@ chmod +x /etc/init.d/samba4
 %{_prefix}/private
 %{_local_bindir}
 %{_local_sbindir}
+%{_bindir}
+%{_sbindir}
 %dir %{_local_libdir}
 %{_local_libdir}/auth
 %{_local_libdir}/bind9
