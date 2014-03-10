@@ -23,6 +23,11 @@
 %define _prefix		%{sambaprefix}
 %define _sysconfdir 	%{sambaprefix}/etc
 %define _localstatedir	%{sambaprefix}/var
+%define _local_bindir   %{sambaprefix}/bin
+%define _local_sbindir  %{sambaprefix}/sbin
+%define _local_libdir   %{sambaprefix}/lib
+%define _local_datadir  %{sambaprefix}/share
+%define _local_includedir %{sambaprefix}/include
 
 Name:           samba4
 Version:        4.1.4
@@ -255,31 +260,31 @@ chmod +x /etc/init.d/samba4
 %dir %{_prefix}
 %{_prefix}/etc
 %{_prefix}/private
-%{_bindir}
-%{_sbindir}
-%dir %{_libdir}
-%{_libdir}/auth
-%{_libdir}/bind9
-%{_libdir}/gensec
-%{_libdir}/idmap
-%{_libdir}/ldb
-%{_libdir}/private
-%{_libdir}/process_model
-%{_libdir}/python2.7
-%{_libdir}/security
-%{_libdir}/service
-%{_libdir}/vfs
-%{_libdir}/*.so.*
+%{_local_bindir}
+%{_local_sbindir}
+%dir %{_local_libdir}
+%{_local_libdir}/auth
+%{_local_libdir}/bind9
+%{_local_libdir}/gensec
+%{_local_libdir}/idmap
+%{_local_libdir}/ldb
+%{_local_libdir}/private
+%{_local_libdir}/process_model
+%{_local_libdir}64/python2.7
+%{_local_libdir}/security
+%{_local_libdir}/service
+%{_local_libdir}/vfs
+%{_local_libdir}/*.so.*
 %{_localstatedir}
-%{_datadir}
+%{_local_datadir}
 #%{_mandir}
 
 %files devel
 %defattr(-,root,root)
-%{_includedir}
-%{_libdir}/*.so
-%dir %{_libdir}/nss_info
-%{_libdir}/nss_info/*.so
-%{_libdir}/pkgconfig
+%{_local_includedir}
+%{_local_libdir}/*.so
+%dir %{_local_libdir}/nss_info
+%{_local_libdir}/nss_info/*.so
+%{_local_libdir}/pkgconfig
 
 %changelog
