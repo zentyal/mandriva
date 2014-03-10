@@ -34,9 +34,10 @@ Source:         http://ftp.samba.org/pub/samba/samba-%{version}.tar.gz
 #Patch0:         vfs_full_audit.diff
 Url:            http://www.samba.org/
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
-BuildRequires:  pkg-config
-BuildRequires:  gnutls-devel pam-devel popt-devel python-devel readline-devel sqlite3-devel libacl-devel
-Requires:       perl = %{perl_version} python
+BuildRequires:  pkgconfig
+#BuildRequires:  gnutls-devel pam-devel popt-devel python-devel readline-devel sqlite3-devel libacl-devel
+BuildRequires:  lib64gnutls-devel lib64pam-devel lib64popt-devel lib64python-devel lib64readline-devel lib64acl-devel
+Requires:       python >= 2.5, perl
 AutoReqProv:    on
 
 %description
