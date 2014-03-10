@@ -1,0 +1,5 @@
+.svn
+packaging/*/*/BUILD/
+packaging/*/*/BUILDROOT/
+packaging/*/*/RPMS/
+packaging/*/*/SRPMS/

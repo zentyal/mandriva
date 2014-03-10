@@ -1,0 +1,16 @@
+# rpath usage is intentional as long as samba3 is the default
+addFilter("E: binary-or-shlib-defines-rpath")
+addFilter("E: rpath-in-buildconfig")
+# Packager: is added automatically by the build system.
+# Let's not fail builds outside of it...
+addFilter("E: no-packager-tag")
+# Python modules aren't scripts
+addFilter("E: rpath-in-buildconfig")
+# Reference to CUPS directories, if we want to fix that,
+addFilter("E: hardcoded-library-path")
+# We need some setgid directories
+addFilter("E: non-standard-dir-perm")
+# BAD stuff, but let's get it to at least start up before
+# fixing details
+addFilter("E: executable-in-library-package")
+addFilter("E: non-versioned-file-in-library-package")

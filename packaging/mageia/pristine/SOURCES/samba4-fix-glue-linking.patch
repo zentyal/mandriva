@@ -1,0 +1,11 @@
+--- samba-4.0.0alpha8/source4/scripting/python/config.mk~	2009-06-19 05:36:48.000000000 +0100
++++ samba-4.0.0alpha8/source4/scripting/python/config.mk	2009-10-08 10:13:14.000000000 +0100
+@@ -19,7 +19,7 @@
+ LIBRARY_REALNAME = samba/glue.$(SHLIBEXT)
+ PRIVATE_DEPENDENCIES = LIBNDR LIBLDB SAMDB CREDENTIALS pyldb python_dcerpc_misc python_dcerpc_security pyauth pyldb_util pyparam_util
+ 
+-python_glue_OBJ_FILES = $(pyscriptsrcdir)/pyglue.o
++python_glue_OBJ_FILES = $(pyscriptsrcdir)/pyglue.o lib/ldb/pyldb.o lib/ldb/pyldb_util.o
+ 
+ $(python_glue_OBJ_FILES): CFLAGS+=-I$(ldbsrcdir)
+ 
