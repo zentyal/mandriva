@@ -86,6 +86,8 @@ Authors:
 #        --sharedstatedir=%{_sharedstatedir} \
 #        --mandir=%{_mandir} \
 #        --infodir=%{_infodir}
+# clear 'no-undefined' linked flags here until we find a way to this in configure
+sed -i -e "s|, '-Wl,--no-undefined'||g" bin/c4che/default.cache.py
 %__make %{?jobs:-j%jobs}
 
 %install
