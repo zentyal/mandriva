@@ -315,14 +315,14 @@ case "$1" in
 		;;
 esac
 rc_exit
-' > /etc/init.d/samba4
+' > /etc/rc.d/init.d/samba4
 
 chmod +x /etc/init.d/samba4
 
 
 %postun
 /sbin/ldconfig
-#rm -f /etc/init.d/samba4
+rm -f /etc/rc.d/init.d/samba4
 
 
 %clean
