@@ -217,8 +217,14 @@ SMBD_BIN="/opt/samba4/sbin/samba"
 SMB_CONF="/opt/samba4/etc/smb.conf"
 PID_FILE="/opt/samba4/var/run/samba.pid"
 
-. /etc/rc.status
-rc_reset
+# Source function library.
+if [ -f /etc/init.d/functions ] ; then
+	. /etc/init.d/functions
+elif [ -f /etc/rc.d/init.d/functions ] ; then
+	. /etc/rc.d/init.d/functions
+else
+	exit 0
+fi
 
 # Check for missing binary
 if [ ! -x ${SMBD_BIN} ]; then
