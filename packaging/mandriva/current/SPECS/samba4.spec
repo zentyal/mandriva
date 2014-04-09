@@ -3,6 +3,7 @@
 #
 # Copyright (c) 2007 Suman Manjunath
 # Copyright (c) 2008 SUSE LINUX Products GmbH, Nuernberg, Germany.
+# Copyright (c) 2014 Zentyal S.L., http://www.zentyal.com
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -12,8 +13,9 @@
 # case the license is the MIT License). An "Open Source License" is a
 # license that conforms to the Open Source Definition (Version 1.9)
 # published by the Open Source Initiative.
-
-# Please submit bugfixes or comments via http://bugs.opensuse.org/
+#
+# Author(s):
+#   Kamen Mazdrashki <kmazdrashki@zentyal.com>
 #
 
 # norootforbuild
