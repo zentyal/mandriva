@@ -106,8 +106,7 @@ sed -i -e "s|, '-Wl,--no-undefined'||g" bin/c4che/default.cache.py
 %__mkdir_p %{buildroot}%{_localstatedir}/run
 %__mkdir_p %{buildroot}%{_localstatedir}/lib
 %__mkdir_p %{buildroot}/etc/ld.so.conf.d/
-#echo %{_libdir} > %{buildroot}/etc/ld.so.conf.d/samba4.conf
-#echo %{_libdir}/private >> %{buildroot}/etc/ld.so.conf.d/samba4.conf
+
 
 %__mkdir_p %{buildroot}/%{_prefix}/etc/
 %__mkdir_p %{buildroot}/%{_prefix}/private/
