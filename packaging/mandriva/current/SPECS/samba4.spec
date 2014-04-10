@@ -33,7 +33,7 @@
 
 Name:           samba4
 Version:        4.1.4
-Release:        1.0
+Release:        1.1
 Summary:        Samba 4
 License:        GPL v3 only
 Group:          Productivity/Networking/Samba
