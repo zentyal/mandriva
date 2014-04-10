@@ -235,7 +235,7 @@ start() {
 	export TMPDIR="/var/tmp"
 	echo -n "Starting Samba SMB daemon "
 	gprintf "Starting Samba4: "
-	daemon -p ${PID_FILE} ${SMBD_BIN} -D -s ${SMB_CONF}
+	daemon --pidfile ${PID_FILE} ${SMBD_BIN} -D -s ${SMB_CONF}
 	RETVAL=$?
 	echo
 	[ $RETVAL -eq 0 ] && touch /var/lock/subsys/samba
