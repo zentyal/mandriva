@@ -2,6 +2,7 @@
 
 %define _enable_debug_packages %{nil}
 %define debug_package          %{nil}
+%define _unpackaged_files_terminate_build 0
 
 %if 0%{?mandriva_version}
     %if %mdkversion < 200610
