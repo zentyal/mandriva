@@ -197,6 +197,16 @@ Mandriva Management Console web interface designed by Linbox.
 
 This is the SAMBA module.
 
+%package -n	mmc-web-samba4
+Summary:	Samba4 module for the MMC web interface
+Group:		%{group}
+Requires:	mmc-web-base >= 3.1.0
+
+%description -n	mmc-web-samba4
+Mandriva Management Console web interface designed by Linbox.
+
+This is the Samba4 module.
+
 %package -n	mmc-web-bulkimport
 Summary:	Bulk import module for the MMC web interface
 Group:		%{group}
@@ -244,11 +254,12 @@ rm -f `find %{buildroot} -name *.pyo`
 %find_lang network
 %find_lang proxy
 %find_lang samba
+%find_lang samba4
 %find_lang bulkimport
 %find_lang sshlpk
 %find_lang userquota
 %else
-touch mail.lang network.lang proxy.lang samba.lang bulkimport.lang sshlpk.lang userquota.lang
+touch mail.lang network.lang proxy.lang samba.lang samba4.lang bulkimport.lang sshlpk.lang userquota.lang
 %endif
 
 %clean
@@ -362,6 +373,12 @@ rm -rf %{buildroot}
 %dir %{_datadir}/mmc
 %dir %{_datadir}/mmc/modules
 %{_datadir}/mmc/modules/samba
+
+%files -n mmc-web-samba4 -f samba4.lang
+%defattr(-,root,root,0755)
+%dir %{_datadir}/mmc
+%dir %{_datadir}/mmc/modules
+%{_datadir}/mmc/modules/samba4
 
 %files -n mmc-web-bulkimport -f bulkimport.lang
 %defattr(-,root,root,0755)
