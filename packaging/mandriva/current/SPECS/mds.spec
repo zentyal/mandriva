@@ -55,6 +55,23 @@ Requires:	samba-common
 SAMBA management plugin for the MMC. It includes
 SAMBA accounts and shares management.
 
+%package -n	python-mmc-samba4
+Summary:	Mandriva Management Console Samba4 plugin
+Group:		%{group}
+Requires:	acl
+Requires:	%{python}
+#Requires:	%{pylibacl}
+Requires:	python-configobj
+# note: python-jinja2 will suggest python-markupsafe
+Requires:	python-jinja2
+Requires:	python-mmc-base >= 3.1.0
+#Requires:   python-smbpasswd
+Requires:	samba4 >= 4.1.4
+
+%description -n	python-mmc-samba4
+Samba4 management plugin for the MMC. It includes
+Samba4 domain, accounts and shares management.
+
 %package -n	python-mmc-mail
 Summary:	Mandriva Management Console base plugin
 Group:		%{group}
@@ -278,6 +295,22 @@ rm -rf %{buildroot}
 %{_libdir}/mmc/add_printer_script
 %{_libdir}/mmc/delete_printer_script
 %{_libdir}/mmc/delete_share_script
+
+%files -n python-mmc-samba4
+%defattr(-,root,root,0755)
+%dir %{_sysconfdir}/mmc
+%dir %{_sysconfdir}/mmc/plugins
+%attr(0640,root,root) %config(noreplace) %{_sysconfdir}/mmc/plugins/samba4.ini
+%dir %{py_puresitedir}/mmc
+%dir %{py_puresitedir}/mmc/plugins
+%{py_puresitedir}/mmc/plugins/samba4
+%dir %{_libdir}/mmc
+# TODO: port script for Samba4
+#%{_libdir}/mmc/add_machine_script
+#%{_libdir}/mmc/add_change_share_script
+#%{_libdir}/mmc/add_printer_script
+#%{_libdir}/mmc/delete_printer_script
+#%{_libdir}/mmc/delete_share_script
 
 %files -n python-mmc-bulkimport
 %defattr(-,root,root,0755)
