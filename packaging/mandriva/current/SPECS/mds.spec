@@ -28,8 +28,8 @@
 
 Summary:	Mandriva Management Directory Server
 Name:		mds
-Version:	2.4.3.1
-Release:	0
+Version:	2.5.1
+Release:	1
 License:	GPL
 Group:		%{group}
 URL:		http://projects.mandriva.org/projects/mmc
