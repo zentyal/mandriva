@@ -399,6 +399,10 @@ rm -rf %{buildroot}
 %{_datadir}/mmc/modules/userquota
 
 %changelog
+* Sun Apr 13 2014 Kamen Mazdrashki <kmazdrashki@zentyal.com> 2.5.1-1
+- Bump version to 2.5.1-1
+- Add packaging for python-mmc-samba4 and mmc-web-samba4
+
 * Tue Oct 09 2012 Jean-Philippe Braun <jpbraun@mandriva.com> 2.4.3.1
 - new upstream bugfix release
 
