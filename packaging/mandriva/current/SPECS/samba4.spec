@@ -3,6 +3,7 @@
 #
 # Copyright (c) 2007 Suman Manjunath
 # Copyright (c) 2008 SUSE LINUX Products GmbH, Nuernberg, Germany.
+# Copyright (c) 2014 Zentyal S.L., http://www.zentyal.com
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -12,8 +13,9 @@
 # case the license is the MIT License). An "Open Source License" is a
 # license that conforms to the Open Source Definition (Version 1.9)
 # published by the Open Source Initiative.
-
-# Please submit bugfixes or comments via http://bugs.opensuse.org/
+#
+# Author(s):
+#   Kamen Mazdrashki <kmazdrashki@zentyal.com>
 #
 
 # norootforbuild
@@ -31,7 +33,7 @@
 
 Name:           samba4
 Version:        4.1.4
-Release:        1.0
+Release:        1.1
 Summary:        Samba 4
 License:        GPL v3 only
 Group:          Productivity/Networking/Samba
@@ -104,8 +106,7 @@ sed -i -e "s|, '-Wl,--no-undefined'||g" bin/c4che/default.cache.py
 %__mkdir_p %{buildroot}%{_localstatedir}/run
 %__mkdir_p %{buildroot}%{_localstatedir}/lib
 %__mkdir_p %{buildroot}/etc/ld.so.conf.d/
-#echo %{_libdir} > %{buildroot}/etc/ld.so.conf.d/samba4.conf
-#echo %{_libdir}/private >> %{buildroot}/etc/ld.so.conf.d/samba4.conf
+
 
 %__mkdir_p %{buildroot}/%{_prefix}/etc/
 %__mkdir_p %{buildroot}/%{_prefix}/private/
@@ -177,28 +178,11 @@ sed -i -e "s|, '-Wl,--no-undefined'||g" bin/c4che/default.cache.py
 
 %post
 /sbin/ldconfig
-echo '#! /bin/sh
-# Copyright (c) 1999-2004 SuSE Linux AG, Nuernberg, Germany.
-# All rights reserved.
+echo '#!/bin/sh
 #
-# Author: Lars Mueller <lmuelle@suse.de>
-#
-# /etc/init.d/samba4
-#   and its symbolic link
-# /usr/sbin/rcsamba4
-#
-#	This program is free software: you can redistribute it and/or modify
-#	it under the terms of the GNU General Public License as published by
-#	the Free Software Foundation, either version 3 of the License, or
-#	(at your option) any later version.
-#
-#	This program is distributed in the hope that it will be useful,
-#	but WITHOUT ANY WARRANTY; without even the implied warranty of
-#	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#	GNU General Public License for more details.
-#
-#	You should have received a copy of the GNU General Public License
-#	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+# chkconfig: 35 91 9
+# description: Starts and stops the Samba samba daemon \
+#	       used to provide SMB network services.
 #
 ### BEGIN INIT INFO
 # Provides:       samba4
@@ -206,18 +190,34 @@ echo '#! /bin/sh
 # Should-Start:   
 # Required-Stop:  $network $remote_fs $syslog
 # Should-Stop:    
-# Default-Start:  3 5
+# Default-Start:  3 4 5
 # Default-Stop:   0 1 2 6
-# Short-Description: Samba 4 SMB/CIFS file and print server
-# Description:    Samba 4 SMB/CIFS file and print server
+# Short-Description: Samba server (samba)
+# Description:Starts and stops the Samba samba daemons used to provide SMB network
+#             services.
 ### END INIT INFO
 
 SMBD_BIN="/opt/samba4/sbin/samba"
 SMB_CONF="/opt/samba4/etc/smb.conf"
 PID_FILE="/opt/samba4/var/run/samba.pid"
 
-. /etc/rc.status
-rc_reset
+# Source function library.
+if [ -f /etc/init.d/functions ] ; then
+  . /etc/init.d/functions
+elif [ -f /etc/rc.d/init.d/functions ] ; then
+  . /etc/rc.d/init.d/functions
+else
+  exit 0
+fi
+
+# Source networking configuration.
+. /etc/sysconfig/network
+
+# Check that networking is up.
+[ ${NETWORKING} = "no" ] && exit 0
+
+# Check that smb.conf exists.
+[ -f ${SMB_CONF} ] || exit 0
 
 # Check for missing binary
 if [ ! -x ${SMBD_BIN} ]; then
@@ -226,96 +226,79 @@ if [ ! -x ${SMBD_BIN} ]; then
 	exit 5
 fi
 
+RETVAL=0
+
 # be extra carefull cause connection fail if TMPDIR is not writeable
 export TMPDIR="/var/tmp"
 
-test -f /etc/sysconfig/samba && \
-	. /etc/sysconfig/samba
+start() {
+	export TMPDIR="/var/tmp"
+	echo -n "Starting Samba SMB daemon "
+	gprintf "Starting Samba4: "
+	daemon --pidfile ${PID_FILE} ${SMBD_BIN} -D -s ${SMB_CONF}
+	RETVAL=$?
+	echo
+	[ $RETVAL -eq 0 ] && touch /var/lock/subsys/samba
+	return $RETVAL
+}
+stop() {
+	gprintf "Shutting down Samba4: "
+	killproc -p ${PID_FILE} -t 10 ${SMBD_BIN}
+	RETVAL=$?
+	echo
+	[ $RETVAL -eq 0 ] && rm -f /var/lock/subsys/samba
+	return $RETVAL
+}
+restart() {
+	stop
+	start
+}
+reload() {
+	export TMPDIR="/var/tmp"
+	gprintf "Reloading smb.conf file: "
+	killproc -p ${PID_FILE} ${SMBD_BIN} -HUP
+	RETVAL=$?
+	echo
+	return $RETVAL
+}
+mdkstatus() {
+	status -p ${PID_FILE} ${SMBD_BIN}
+}
 
-for setting in $SAMBA_SMBD_ENV; do
-	pathcheck="${setting%%:*}"
-	variable="${setting##*:}"
-	test "${pathcheck}" != "${variable}" -a ! -e "${pathcheck}" && \
-		continue
-	export eval ${variable}
-done
 
 case "$1" in
 	start)
-		echo -n "Starting Samba SMB daemon "
-		if [ ! -f ${SMB_CONF} ]; then
-			echo -n >&2 "Samba configuration file, ${SMB_CONF} does not exist. "
-			rc_status -s
-			exit 6
-		fi
-		checkproc -p ${PID_FILE} ${SMBD_BIN}
-		case $? in
-			0) echo -n "- Warning: daemon already running. " ;;
-			1) echo -n "- Warning: ${PID_FILE} exists. " ;;
-		esac
-		test -f /etc/sysconfig/language && \
-			. /etc/sysconfig/language
-		export LC_ALL="$RC_LC_ALL"
-		export LC_CTYPE="$RC_LC_CTYPE"
-		export LANG="$RC_LANG"
-		startproc -p ${PID_FILE} ${SMBD_BIN} -D -s ${SMB_CONF}
-		unset LC_ALL LC_CTYPE LANG
-		rc_status -v
+		start
 		;;
 	stop)
-		echo -n "Shutting down Samba SMB daemon "
-		checkproc -p ${PID_FILE} ${SMBD_BIN} || \
-			echo -n " Warning: daemon not running. "
-		killproc -p ${PID_FILE} -t 10 ${SMBD_BIN}
-		rc_status -v
-		;;
-	try-restart|condrestart)
-		if test "$1" = "condrestart"; then
-			echo "${attn} Use try-restart ${done}(LSB)${attn} rather than condrestart ${warn}(RH)${norm}"
-		fi
-		$0 status
-		if test $? = 0; then
-			$0 restart
-		else 
-			rc_reset
-		fi
-		rc_status
+		stop
 		;;
 	restart)
-		$0 stop
-		$0 start
-		rc_status
+		restart
 		;;
-	force-reload|reload)
-		echo -n "Reloading Samba SMB daemon "
-		checkproc -p ${PID_FILE} ${SMBD_BIN} && \
-			touch ${PID_FILE} || \
-			echo -n >&2 " Warning: daemon not running. "
-		killproc -p ${PID_FILE} -HUP ${SMBD_BIN}
-		rc_status -v
+	reload)
+		reload
 		;;
 	status)
-		echo -n "Checking for Samba SMB daemon "
-		checkproc -p ${PID_FILE} ${SMBD_BIN}
-		rc_status -v
+		mdkstatus
 		;;
-	probe)
-		test ${SMB_CONF} -nt ${PID_FILE} && echo reload
+	condrestart)
+		[ -f /var/lock/subsys/samba ] && restart || :
 		;;
 	*)
-		echo "Usage: $0 {start|stop|status|try-restart|restart|force-reload|reload|probe}"
+		gprintf "Usage: %s {start|stop|restart|status|condrestart}\n" "$0"
 		exit 1
-		;;
 esac
-rc_exit
-' > /etc/init.d/samba4
+
+exit $?
+' > /etc/rc.d/init.d/samba4
 
 chmod +x /etc/init.d/samba4
 
 
 %postun
 /sbin/ldconfig
-#rm -f /etc/init.d/samba4
+rm -f /etc/rc.d/init.d/samba4
 
 
 %clean
